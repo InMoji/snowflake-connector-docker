@@ -68,6 +68,7 @@ docker tag snowflake-connector:latest 030395983582.dkr.ecr.us-east-1.amazonaws.c
 docker tag snowflake-connector:latest 030395983582.dkr.ecr.us-east-1.amazonaws.com/snowflake-connector:connector-"$snowflake_connector_version"
 if [ "$PRODUCTION" = "1" ]; then
     docker tag snowflake-connector:latest 030395983582.dkr.ecr.us-east-1.amazonaws.com/snowflake-connector:production
+    docker tag snowflake-connector:latest snowflake-connector:production
 fi
 `aws ecr get-login`
 docker push 030395983582.dkr.ecr.us-east-1.amazonaws.com/snowflake-connector
