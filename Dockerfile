@@ -1,5 +1,5 @@
 # Build me!
-# docker build -t snowflake-connector .
+# docker build -t snowflake-connector --no-cache .
 # docker push inmoji/snowflake-connector:latest
 
 
