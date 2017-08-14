@@ -70,7 +70,7 @@ if [ "$PRODUCTION" = "1" ]; then
     docker tag snowflake-connector:latest 030395983582.dkr.ecr.us-east-1.amazonaws.com/snowflake-connector:production
     docker tag snowflake-connector:latest snowflake-connector:production
 fi
-`aws ecr get-login`
+`aws ecr get-login | sed -e 's/-e none//g'`
 docker push 030395983582.dkr.ecr.us-east-1.amazonaws.com/snowflake-connector
 
 git tag "$version"
