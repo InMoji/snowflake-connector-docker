@@ -58,17 +58,16 @@ while true; do
     fi
 done
 
-docker build -t snowflake-connector --no-cache .
-snowflake_connector_version=$(docker run -it  -a STDOUT snowflake-connector python -c "$(echo -e "import snowflake.connector\nprint '.'.join(map(str, filter(lambda x:  x != None, snowflake.connector.VERSION)))")")
+docker build -t inmoji/snowflake-connector --no-cache .
+snowflake_connector_version=$(docker run -it  -a STDOUT inmoji/snowflake-connector python -c "$(echo -e "import snowflake.connector\nprint '.'.join(map(str, filter(lambda x:  x != None, snowflake.connector.VERSION)))")")
 
-docker tag snowflake-connector:latest snowflake-connector:"$version"
-docker tag snowflake-connector:latest snowflake-connector:connector-"$snowflake_connector_version"
-docker tag snowflake-connector:latest 030395983582.dkr.ecr.us-east-1.amazonaws.com/snowflake-connector:latest
-docker tag snowflake-connector:latest 030395983582.dkr.ecr.us-east-1.amazonaws.com/snowflake-connector:"$version"
-docker tag snowflake-connector:latest 030395983582.dkr.ecr.us-east-1.amazonaws.com/snowflake-connector:connector-"$snowflake_connector_version"
+docker tag inmoji/snowflake-connector:latest inmoji/snowflake-connector:"$version"
+docker tag inmoji/snowflake-connector:latest inmoji/snowflake-connector:connector-"$snowflake_connector_version"
+docker tag inmoji/snowflake-connector:latest 030395983582.dkr.ecr.us-east-1.amazonaws.com/snowflake-connector:latest
+docker tag inmoji/snowflake-connector:latest 030395983582.dkr.ecr.us-east-1.amazonaws.com/snowflake-connector:"$version"
+docker tag inmoji/snowflake-connector:latest 030395983582.dkr.ecr.us-east-1.amazonaws.com/snowflake-connector:connector-"$snowflake_connector_version"
 if [ "$PRODUCTION" = "1" ]; then
-    docker tag snowflake-connector:latest 030395983582.dkr.ecr.us-east-1.amazonaws.com/snowflake-connector:production
-    docker tag snowflake-connector:latest snowflake-connector:production
+    docker tag inmoji/snowflake-connector:latest 030395983582.dkr.ecr.us-east-1.amazonaws.com/snowflake-connector:production
 fi
 `aws ecr get-login | sed -e 's/-e none//g'`
 docker push 030395983582.dkr.ecr.us-east-1.amazonaws.com/snowflake-connector
