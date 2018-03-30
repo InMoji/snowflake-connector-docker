@@ -2,7 +2,7 @@
 
 # semver.sh
 # Based on https://github.com/fmahnke/shell-semver/blob/master/increment_version.sh
-set -e
+#set -e
 
 semver_inc()
 {
@@ -37,28 +37,32 @@ semver_inc()
     version="${a[0]}.${a[1]}.${a[2]}"
 }
 
-status=$(git status --porcelain)
-if [ ! -z "$status" ]; then
-    echo -e "There are uncommitted files please commit them or stash them:\n$status"
-    exit 1
-fi
+#status=$(git status --porcelain)
+#if [ ! -z "$status" ]; then
+#    echo -e "There are uncommitted files please commit them or stash them:\n$status"
+#    exit 1
+#fi
 
-git pull
+#git pull
 version=$(git tag -l [0-9]*.[0-9]*.[0-9]* | tail -n 1)
 PATCH=${PATCH:-"$([[ "$MAJOR" || "$MINOR" ]] || echo "1")"}
 semver_inc
 
-while true; do
-    rand=$RANDOM
-    read -p "Type $rand to build production as well or ENTER to skip: " num
-    if [ "$num" == "$rand" ]; then
-        PRODUCTION=1
-        break;
-    elif [ -z "$num" ]; then
-        PRODUCTION=0
-        break;
-    fi
-done
+#while true; do
+#    rand=$RANDOM
+#    read -p "Type $rand to build production as well or ENTER to skip: " num
+#    if [ "$num" == "$rand" ]; then
+#        PRODUCTION=1
+#        break;
+#    elif [ -z "$num" ]; then
+#        PRODUCTION=0
+#        break;
+#    fi
+#done
+
+# login to repos
+`aws ecr get-login --no-include-email`
+echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
 
 docker build -t inmoji/snowflake-connector --no-cache .
 snowflake_connector_version=$(docker run -it  -a STDOUT inmoji/snowflake-connector python -c "$(echo -e "import sys, snowflake.connector\nsys.stdout.write('.'.join(map(str, filter(lambda x:  x != None, snowflake.connector.VERSION))))")")
@@ -71,7 +75,8 @@ docker tag inmoji/snowflake-connector:latest 030395983582.dkr.ecr.us-east-1.amaz
 if [ "$PRODUCTION" = "1" ]; then
     docker tag inmoji/snowflake-connector:latest 030395983582.dkr.ecr.us-east-1.amazonaws.com/snowflake-connector:production
 fi
-`aws ecr get-login | sed -e 's/-e none//g'`
+
+docker push 
 docker push 030395983582.dkr.ecr.us-east-1.amazonaws.com/snowflake-connector
 
 git tag "$version"
