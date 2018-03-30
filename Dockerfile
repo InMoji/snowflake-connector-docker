@@ -2,6 +2,9 @@
 # docker build -t snowflake-connector --no-cache .
 # docker push inmoji/snowflake-connector:latest
 
+## PyPI API:
+# https://pypi.python.org/pypi/snowflake-connector-python/json
+
 
 
 ## ECR images tends to be outdateded
