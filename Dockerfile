@@ -15,4 +15,4 @@
 FROM amazonlinux
 
 # Install dependencies
-RUN yum update -y -q && yum install -q -y python27-pip gcc libffi-devel openssl-devel python27-devel && pip install --upgrade --no-cache-dir --quiet --compile snowflake-connector-python python-json-logger && yum autoremove -q -y python27-pip gcc libffi-devel openssl-devel python27-devel && yum clean all
+RUN yum update -y -q && yum install -q -y python3 && pip3 install --upgrade --no-cache-dir --quiet --compile snowflake-connector-python python-json-logger && yum clean all -q && rm -rf /var/cache/yum

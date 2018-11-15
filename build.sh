@@ -70,6 +70,7 @@ if ! [[ -z "$DOCKERHUB_PASSWORD" ]]; then
     echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
 fi
 
+docker pull amazonlinux
 docker build -t inmoji/snowflake-connector --no-cache .
 snowflake_connector_version=$(docker run -it -a STDOUT inmoji/snowflake-connector python -c "$(echo -e "import sys, snowflake.connector\nsys.stdout.write('.'.join(map(str, filter(lambda x:  x != None, snowflake.connector.VERSION))))")")
 
