@@ -72,7 +72,7 @@ fi
 
 docker pull amazonlinux
 docker build -t inmoji/snowflake-connector --no-cache .
-snowflake_connector_version=$(docker run -it -a STDOUT inmoji/snowflake-connector python -c "$(echo -e "import sys, snowflake.connector\nsys.stdout.write('.'.join(map(str, filter(lambda x:  x != None, snowflake.connector.VERSION))))")")
+snowflake_connector_version=$(docker run -it -a STDOUT inmoji/snowflake-connector python3 -c "$(echo -e "import sys, snowflake.connector\nsys.stdout.write('.'.join(map(str, filter(lambda x:  x != None, snowflake.connector.VERSION))))")")
 
 docker tag inmoji/snowflake-connector:latest inmoji/snowflake-connector:"$version"
 docker tag inmoji/snowflake-connector:latest inmoji/snowflake-connector:connector-"$snowflake_connector_version"
